@@ -1,0 +1,135 @@
+font:
+  normal:
+    family: JetBrains Mono
+  size: 10
+
+window:
+  decorations: None
+
+colors:
+  hints:
+    start:
+      foreground: '#1d1f21'
+      background: '#e9ff5e'
+
+    end:
+      foreground: '#1d1f21'
+      background: '#e9ff5e'
+  cursor:
+    background: '#008000' # green. Avoid problems like that https://github.com/alacritty/alacritty/issues/4576
+
+
+hints:
+  enabled:
+    # sha-1 hashes (git)
+    - regex: '[0-9a-f]{5,40}'
+      action: Copy
+      post_processing: false
+      binding:
+        key: H
+        mods: Control|Alt
+    # Linux path
+    - regex: '\~?[\w/.\-]*[/.][\w/.\-]*'
+      action: Copy
+      post_processing: false
+      binding:
+        key: P
+        mods: Control|Alt
+    - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
+              [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+      command: xdg-open
+      post_processing: true
+      mouse:
+        enabled: true
+        mods: None
+      binding:
+        key: U
+        mods: Control|Alt
+
+key_bindings:
+  # win + shift + enter starts new terminal in the same directory
+  - { key: V, mods: Control, action: Paste }
+  - { key: C, mods: Control, action: Copy }
+  - { key: Back, mods: Control, chars: "\x08" } # ctrl backspace (for macOS) to drop the word in vim
+  - { key: Back, mods: Alt, chars: "\x08" } # option backspace (for macOS) to drop the word in vim
+  # Ctrl+Period to siginit because Ctrl+C is Copy (Ctrl+period because it's not escape sequence thus can't produce binding
+  # conflict with cli)
+  - { key: Period, mods: Control, chars: "\x03" }
+  # Remap ctrl+; to ctrl+b for tmux usage (Use `showkey -a` not inside tmux)
+  - { key: Semicolon, mods: Control, chars: "\x02" }
+  # macOs HACK. make ctrl+6 behave like ctrl+^ (like it behaves on Linux). Needed for vim
+  - { key: Key6,      mods: Control,   chars: "\x1e" }
+  # Hack for macOs https://github.com/alacritty/alacritty/issues/62
+  - { key: A,         mods: Command,       chars: "\x1ba"                       }
+  - { key: B,         mods: Command,       chars: "\x1bb"                       }
+  # - { key: C,         mods: Command,       chars: "\x1bc"                       }
+  - { key: D,         mods: Command,       chars: "\x1bd"                       }
+  - { key: E,         mods: Command,       chars: "\x1be"                       }
+  - { key: F,         mods: Command,       chars: "\x1bf"                       }
+  - { key: G,         mods: Command,       chars: "\x1bg"                       }
+  - { key: H,         mods: Command,       chars: "\x1bh"                       }
+  - { key: I,         mods: Command,       chars: "\x1bi"                       }
+  - { key: J,         mods: Command,       chars: "\x1bj"                       }
+  - { key: K,         mods: Command,       chars: "\x1bk"                       }
+  - { key: L,         mods: Command,       chars: "\x1bl"                       }
+  - { key: M,         mods: Command,       chars: "\x1bm"                       }
+  - { key: N,         mods: Command,       chars: "\x1bn"                       }
+  - { key: O,         mods: Command,       chars: "\x1bo"                       }
+  - { key: P,         mods: Command,       chars: "\x1bp"                       }
+  - { key: R,         mods: Command,       chars: "\x1br"                       }
+  - { key: S,         mods: Command,       chars: "\x1bs"                       }
+  - { key: T,         mods: Command,       chars: "\x1bt"                       }
+  - { key: U,         mods: Command,       chars: "\x1bu"                       }
+  # - { key: V,         mods: Command,       chars: "\x1bv"                       }
+  - { key: W,         mods: Command,       chars: "\x1bw"                       }
+  - { key: X,         mods: Command,       chars: "\x1bx"                       }
+  - { key: Y,         mods: Command,       chars: "\x1by"                       }
+  - { key: Z,         mods: Command,       chars: "\x1bz"                       }
+  - { key: A,         mods: Command|Shift, chars: "\x1bA"                       }
+  - { key: B,         mods: Command|Shift, chars: "\x1bB"                       }
+  # - { key: C,         mods: Command|Shift, chars: "\x1bC"                       }
+  - { key: D,         mods: Command|Shift, chars: "\x1bD"                       }
+  - { key: E,         mods: Command|Shift, chars: "\x1bE"                       }
+  - { key: F,         mods: Command|Shift, chars: "\x1bF"                       }
+  - { key: G,         mods: Command|Shift, chars: "\x1bG"                       }
+  - { key: H,         mods: Command|Shift, chars: "\x1bH"                       }
+  - { key: I,         mods: Command|Shift, chars: "\x1bI"                       }
+  - { key: J,         mods: Command|Shift, chars: "\x1bJ"                       }
+  - { key: K,         mods: Command|Shift, chars: "\x1bK"                       }
+  - { key: L,         mods: Command|Shift, chars: "\x1bL"                       }
+  - { key: M,         mods: Command|Shift, chars: "\x1bM"                       }
+  - { key: N,         mods: Command|Shift, chars: "\x1bN"                       }
+  - { key: O,         mods: Command|Shift, chars: "\x1bO"                       }
+  - { key: P,         mods: Command|Shift, chars: "\x1bP"                       }
+  - { key: R,         mods: Command|Shift, chars: "\x1bR"                       }
+  - { key: S,         mods: Command|Shift, chars: "\x1bS"                       }
+  - { key: T,         mods: Command|Shift, chars: "\x1bT"                       }
+  - { key: U,         mods: Command|Shift, chars: "\x1bU"                       }
+  # - { key: V,         mods: Command|Shift, chars: "\x1bV"                       }
+  - { key: W,         mods: Command|Shift, chars: "\x1bW"                       }
+  - { key: X,         mods: Command|Shift, chars: "\x1bX"                       }
+  - { key: Y,         mods: Command|Shift, chars: "\x1bY"                       }
+  - { key: Z,         mods: Command|Shift, chars: "\x1bZ"                       }
+  - { key: Key1,      mods: Command,       chars: "\x1b1"                       }
+  - { key: Key2,      mods: Command,       chars: "\x1b2"                       }
+  - { key: Key3,      mods: Command,       chars: "\x1b3"                       }
+  - { key: Key4,      mods: Command,       chars: "\x1b4"                       }
+  - { key: Key5,      mods: Command,       chars: "\x1b5"                       }
+  - { key: Key6,      mods: Command,       chars: "\x1b6"                       }
+  - { key: Key7,      mods: Command,       chars: "\x1b7"                       }
+  - { key: Key8,      mods: Command,       chars: "\x1b8"                       }
+  - { key: Key9,      mods: Command,       chars: "\x1b9"                       }
+  - { key: Key0,      mods: Command,       chars: "\x1b0"                       }
+  - { key: Space,     mods: Control,   chars: "\x00"                        } # Ctrl + Space
+  - { key: Grave,     mods: Command,       chars: "\x1b`"                       } # Command + `
+  - { key: Grave,     mods: Command|Shift, chars: "\x1b~"                       } # Command + ~
+  - { key: Period,    mods: Command,       chars: "\x1b."                       } # Command + .
+  - { key: Key8,      mods: Command|Shift, chars: "\x1b*"                       } # Command + *
+  - { key: Key3,      mods: Command|Shift, chars: "\x1b#"                       } # Command + #
+  - { key: Period,    mods: Command|Shift, chars: "\x1b>"                       } # Command + >
+  - { key: Comma,     mods: Command|Shift, chars: "\x1b<"                       } # Command + <
+  - { key: Minus,     mods: Command|Shift, chars: "\x1b_"                       } # Command + _
+  - { key: Key5,      mods: Command|Shift, chars: "\x1b%"                       } # Command + %
+  - { key: Key6,      mods: Command|Shift, chars: "\x1b^"                       } # Command + ^
+  - { key: Backslash, mods: Command,       chars: "\x1b\\"                      } # Command + \
+  - { key: Backslash, mods: Command|Shift, chars: "\x1b|"                       } # Command + |

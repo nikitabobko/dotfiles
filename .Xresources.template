@@ -1,0 +1,8 @@
+! Fonts {{{
+Xft.antialias: true
+Xft.hinting:   true
+Xft.rgba:      rgb
+Xft.hintstyle: hintfull
+Xcursor.size:  30
+Xft.dpi:       190
+! }}}

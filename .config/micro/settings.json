@@ -1,0 +1,19 @@
+{
+    "autosu": true,
+    "colorcolumn": 100,
+    "colorscheme": "bubblegum",
+    "cursorline": false,
+    "eofnewline": false,
+    "fastdirty": true,
+    "hidehelp": false,
+    "matchbrace": false,
+    "matchbraceleft": false,
+    "mkparents": true,
+    "parsecursor": true,
+    "pluginchannels": [
+        "https://raw.githubusercontent.com/micro-editor/plugin-channel/master/channel.json"
+    ],
+    "pluginrepos": [],
+    "tabstospaces": true,
+    "termtitle": false
+}

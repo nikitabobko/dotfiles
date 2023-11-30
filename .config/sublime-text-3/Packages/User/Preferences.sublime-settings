@@ -1,0 +1,27 @@
+{
+	"color_scheme": "auto",
+	"detect_indentation": false,
+	"font_face": "JetBrains Mono Regular",
+	"font_options":
+	[
+		"no_liga",
+		"no_clig",
+		"no_calt"
+	],
+	"font_size": 20,
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"rulers":
+	[
+		100
+	],
+	"tab_size": 4,
+	"theme": "Default.sublime-theme",
+	"word_wrap": true,
+	"save_on_focus_lost": true,
+	"draw_white_space": ["all"],
+	"dark_color_scheme": "Monokai.sublime-color-scheme",
+	"light_color_scheme": "Breakers.sublime-color-scheme",
+}

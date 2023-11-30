@@ -1,0 +1,37 @@
+# i3blocks configuration file
+#
+# The i3blocks man page describes the usage of the binary,
+# and its website describes the configuration:
+#
+#     https://vivien.github.io/i3blocks
+
+# Global properties
+separator=true
+separator_block_width=15
+
+[time]
+command=echo "📅 $(date '+%a %d %b, %H:%M')"
+interval=30
+
+[hostname]
+command=hostname
+interval=once
+
+[battery2]
+command=/usr/lib/i3blocks/battery2/battery2
+markup=pango
+interval=30
+
+[volume-pulseaudio]
+LONG_FORMAT="🔊 ${VOL}% [${INDEX}:${NAME}]"
+command=/usr/lib/i3blocks/volume-pulseaudio/volume-pulseaudio
+interval=persist
+SUBSCRIBE=1
+signal=1
+
+[xkb_layout]
+command=/usr/lib/i3blocks/xkb_layout/xkb_layout
+font=monospace
+font_weight=bold
+interval=persist
+markup=pango

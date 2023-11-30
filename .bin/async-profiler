@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+# set -x # Print shell commands as they are executed (or you can try -v which is less verbose)
+
+if [ $# -ne 2 ]; then
+    echo "Usage: async-profiler <path-to-async-profiler.sh> <pid>"
+    echo "    This is wrapper script for https://github.com/jvm-profiling-tools/async-profiler."
+    echo "    Because default UX of async-profiler desperately sucks!"
+    exit 1
+fi
+
+profiler_sh=$1
+pid=$2
+snapshot_file="async-profiler-snapshot-$(date | tr ' ' '-')-pid-$pid.jfr"
+
+eval "$profiler_sh" start -f $snapshot_file $pid
+echo "Press Any Key to stop profiling"
+read
+
+eval "$profiler_sh" stop -f $snapshot_file $pid
+echo "snapshot is saved to $snapshot_file"

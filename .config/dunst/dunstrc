@@ -1,0 +1,3 @@
+[skip-rule]
+appname=Spotify
+skip_display=true

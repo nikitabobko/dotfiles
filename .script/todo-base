@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+set -o pipefail
+set -x
+
+from="$1"
+pass="$2"
+to="$3"
+
+echo_red() {
+    echo -e "\e[1;31m$@\e[0m"
+}
+
+echo_green() {
+    echo -e "\033[0;32m$@\e[0m"
+}
+
+file=$(mktemp)
+echo "TMP FILE: $file"
+
+cat << EOF > $file
+To: $to
+Subject: 
+EOF
+
+v '+norm G$' +startinsert! "$file"
+
+# sendmail $1
+
+curl --url 'smtp://smtp.gmail.com:587' \
+    --mail-from $from \
+    --mail-rcpt $1 \
+    --ssl-reqd \
+    --upload-file $file \
+    --user "${from}:$($pass)"
+
+echo_green 'Sent successfully!'

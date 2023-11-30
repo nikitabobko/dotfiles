@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+if [ $# -ne 2 ]; then
+    echo "Usage: mv-strict src dst"
+    exit 1
+fi
+
+rm -rf "$2" || true
+mkdir -p "$2"
+rm -rf "$2"
+cp -r "$1" "$2"

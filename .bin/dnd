@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+# Drag and drop from CLI to GUI apps
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    dragon-drop "$@"
+    exit 0
+fi
+
+if isMacOs; then
+    open -R "$@"
+    exit 0
+fi
+
+make_dnd_window_sticky_once_it_appear() {
+    while [ "$(xdotool getwindowfocus getwindowname)" != "dragon" ]; do
+        true # just wait
+    done
+    wmctrl -i -r "$(xdotool getwindowfocus)" -b add,sticky
+}
+
+make_dnd_window_sticky_once_it_appear &
+dragon-drop --all --and-exit "$@"

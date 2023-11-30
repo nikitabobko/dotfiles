@@ -1,0 +1,117 @@
+[alias]
+	a = add -p
+	aa = add --all
+	an = add -N .
+	b = branch
+	c = -c diff.noprefix=true commit
+	ca = commit --amend --allow-empty
+	cae = commit --allow-empty
+	can = commit --amend --no-edit --allow-empty
+	cem = commit -m 'EMPTY MESSAGE' # mnemonic Empty Message
+	cf = commit --fixup
+	ch = checkout
+	chd = checkout --detach
+	cln = "!f() { local hash=$(git rev-parse HEAD) && git add --all && git commit --no-verify -m \"GIT CLEAN $(date)\" && git reset --hard $hash; }; f"
+	cp = cherry-pick --allow-empty
+	cpa = cherry-pick --abort
+	cps = cherry-pick --skip
+	cpc = cherry-pick --continue
+	cps = cherry-pick --skip
+	cpx = cherry-pick -x --allow-empty
+	crm = commit --reuse-message
+	cup = "!f() { git cem && git u && git p; }; f" # commit && pull && push
+	cs = commit --squash
+	d = diff --no-prefix
+	dt = "!f() { git --paginate difftool --tool=difftastic --no-prompt \"$@\"; }; f"
+	ds = diff --staged --no-prefix
+	f = !git-fetch-smart-if-no-args
+	ff = !git-fast-forward.bash
+	fpr = "!f() { git fetch o pull/"$1"/head:pr-"$1"; }; f" # fetch-pull-request
+	g = l --graph
+	ga = g --all
+	jm = jump merge
+	l = log --no-prefix --pretty='%C(auto)%h %Cgreen%as %Cblue%an/%cn%C(auto)%d %Creset%s'
+	lh = log-head
+	ls-assumed-unchanged = "!f() { git ls-files -v | grep '^h'; }; f"
+	ls-repo = ls-tree --full-tree -r --name-only HEAD
+	ls-untracked = ls-files --others --exclude-standard
+	p = push
+	pb = "!f() { git push o @:refs/heads/"$1"; }; f" # mnemonic: git push branch
+	pbf = "!f() { git push --force-with-lease o @:refs/heads/"$1"; }; f" # mnemonic: git push branch
+	pf = push --force-with-lease
+	p-tmp = "!f() { git push o "${1:-HEAD}":refs/heads/bobko/tmp/$(git rev-parse --short "${1:-HEAD}"); }; f"
+	rb = rebase -i
+	rba = rebase --abort
+	rbas = rebase -i --autosquash
+	rbc = rebase --continue
+	rbs = rebase --skip
+	rv = revise -i
+	rvc = revise -c
+	rve = revise -e
+	rvas = revise -i --autosquash
+	rs = reset
+	rsh = reset --hard
+	rss = reset --soft
+	s = !git-status.bash
+	scp = "!f() { git rev-list --no-walk --reverse $@ | while read it; do git cherry @ ${it} ${it}~; done | grep + | awk '{print $2}' | xargs git cherry-pick; }; f"
+	sh = show --no-prefix
+	sht = "!f() { git --paginate difftool --tool=difftastic --no-prompt ${1:-@}^..${1:-@}; }; f"
+	tmp = branch -f tmp
+	u = !git-pull-smart-if-no-args
+	up = "!f() { g u && g p; }; f"
+	wip = "!f() { git add --all && git commit --no-verify -m \"WIP! $(date) $*\"; }; f"
+	wa = worktree add --detach
+	wl = worktree list
+[user]
+	name = Nikita Bobko
+	email = email@example.com
+[core]
+	editor = "v '+set colorcolumn=73'"
+	quotePath = false
+	commitGraph = true
+[push]
+	default = current
+[commit]
+	verbose = true
+	cleanup = scissors
+[rebase]
+	instructionFormat = "%as %an/%cn%d %s"
+	autoStash = on
+	missingCommitsCheck = error
+[pull]
+	rebase = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[receive]
+	denyCurrentBranch = updateInstead
+[merge]
+	conflictstyle = diff3
+[format]
+	pretty = fuller
+[status]
+	showStash = true
+[init]
+	defaultBranch = main
+[advice]
+	detachedHead = false
+[diff]
+	colorMoved = default
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+[branch]
+	autosetupmerge = off
+[clone]
+	defaultRemoteName = o
+[remote]
+	pushDefault = o
+[includeIf "gitdir:~/jb/"]
+	path = ~/jb/.gitconfig
+[includeIf "gitdir:~/.vim/"]
+	path = ~/.vim/.gitconfig # Hack because vim-plug doesn't ignore my custom git configs. This PR https://github.com/junegunn/vim-plug/pull/1117 doens't fix the problem
+[gc]
+	writeCommitGraph = true
+[fetch]
+	prune = true # Because people like to push branches with incompatible names that lead to 'cannot lock ref' errors

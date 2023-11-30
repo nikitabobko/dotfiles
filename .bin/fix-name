@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+set -o pipefail # Any command failed in the pipe fails the whole pipe
+# set -x # Print shell commands as they are executed (or you can try -v which is less verbose)
+
+fixer() {
+    echo "$1" |
+        sed 's/ /_/g' |
+        sed 's/(/_/g' |
+        sed 's/)/_/g' |
+        sed 's/а/a/g' |   sed 's/А/A/g' |
+        sed 's/б/b/g' |   sed 's/Б/B/g' |
+        sed 's/в/v/g' |   sed 's/В/V/g' |
+        sed 's/г/g/g' |   sed 's/Г/G/g' |
+        sed 's/д/d/g' |   sed 's/Д/D/g' |
+        sed 's/е/e/g' |   sed 's/Е/E/g' |
+        sed 's/ё/e/g' |   sed 's/Ё/E/g' |
+        sed 's/ж/zh/g' |  sed 's/Ж/ZH/g' |
+        sed 's/з/z/g' |   sed 's/З/Z/g' |
+        sed 's/и/i/g' |   sed 's/И/I/g' |
+        sed 's/й/y/g' |   sed 's/Й/Y/g' |
+        sed 's/к/k/g' |   sed 's/К/K/g' |
+        sed 's/л/l/g' |   sed 's/Л/L/g' |
+        sed 's/м/m/g' |   sed 's/М/M/g' |
+        sed 's/н/n/g' |   sed 's/Н/N/g' |
+        sed 's/о/o/g' |   sed 's/О/O/g' |
+        sed 's/п/p/g' |   sed 's/П/P/g' |
+        sed 's/р/r/g' |   sed 's/Р/R/g' |
+        sed 's/с/s/g' |   sed 's/С/S/g' |
+        sed 's/т/t/g' |   sed 's/Т/T/g' |
+        sed 's/у/u/g' |   sed 's/У/U/g' |
+        sed 's/ф/f/g' |   sed 's/Ф/F/g' |
+        sed 's/к/k/g' |   sed 's/К/K/g' |
+        sed 's/ц/ts/g' |  sed 's/Ц/TS/g' |
+        sed 's/ч/ch/g' |  sed 's/Ч/CH/g' |
+        sed 's/ш/sh/g' |  sed 's/Ш/SH/g' |
+        sed 's/щ/sh/g' |  sed 's/Щ/SH/g' |
+        sed 's/ъ//g' |    sed 's/Ъ//g' |
+        sed 's/ы/y/g' |   sed 's/Ы/Y/g' |
+        sed 's/ь//g' |    sed 's/Ь//g' |
+        sed 's/э/e/g' |   sed 's/Э/E/g' |
+        sed 's/ю/u/g' |   sed 's/Ю/U/g' |
+        sed 's/я/ya/g' |  sed 's/Я/YA/g'
+}
+
+for it in "$@"; do
+    new_name="$(fixer "$it")"
+    if ! [ -e "$new_name" ]; then
+        mv "$it" "$new_name"
+    else
+        echo "can't move '$it' to '$new_name' (already exist)"
+    fi
+done

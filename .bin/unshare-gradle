@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+set -o pipefail # Any command failed in the pipe fails the whole pipe
+# set -x # Print shell commands as they are executed (or you can try -v which is less verbose)
+
+tmp_gradle=~/.unshare/.gradle
+tmp_m2=~/.unshare/.m2
+tmp_cache=~/.unshare/.cache
+mkdir -p $tmp_gradle
+mkdir -p $tmp_m2
+mkdir -p $tmp_cache
+
+sudo unshare --mount --fork --pid bash -c "
+    mount --bind $tmp_gradle /home/bobko/.gradle;
+    mount --bind $tmp_m2     /home/bobko/.m2;
+    mount --bind $tmp_cache  /home/bobko/.cache;
+    su -c \"PROMPT_LABEL='unshare-gradle ' zsh\" - bobko"

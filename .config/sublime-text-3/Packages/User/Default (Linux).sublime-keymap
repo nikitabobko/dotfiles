@@ -1,0 +1,7 @@
+[
+	{ "keys": ["ctrl+alt+right"], "command": "jump_forward" },
+	{ "keys": ["ctrl+alt+left"], "command": "jump_back" },
+	{ "keys": ["ctrl+tab"], "command": "next_view" },
+	{ "keys": ["ctrl+shift+tab"], "command": "prev_view" },
+	{ "keys": ["ctrl+shift+a"], "command": "show_overlay", "args": {"overlay": "command_palette"} },
+]

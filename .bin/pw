@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+set -o pipefail # Any command failed in the pipe fails the whole pipe
+# set -x # Print shell commands as they are executed (or you can try -v which is less verbose)
+
+export FZF_DEFAULT_OPTS="--height 60% --layout=reverse"
+
+account=$(find ~/.password-store -name '*.gpg' | sed 's/\.gpg$//' | sed 's/.*password-store\///' | fzf) || exit 0
+decrypted="$(pass show "$account")"
+password="$(head -1 <<< "$decrypted")"
+meta="$(sed 1d <<< "$decrypted")"
+
+printAcc() { sed -E 's/.*\/(.*)$/\1/' <<< "$account"; }
+
+printAcc
+echo "(copied to clipboard)"
+printAcc | cb
+
+PASS_ITEM="_PASS"
+FILENAME_ITEM="_FILENAME"
+
+while true; do
+    picked="$(echo -e "$PASS_ITEM\n$FILENAME_ITEM\ntype\n$meta" | cut -d ':' -f 1 | fzf)" || break
+    if [ "$picked" = "type" ]; then
+        onStart="$(~/.script/getActiveWindowTitle.sh)"
+        while [ "$(~/.script/getActiveWindowTitle.sh)" = "$onStart" ]; do true; done
+        ~/.script/typeOnVirtualKeyboard.sh "$(printAcc)\t$(pass show "$account" | head -1)"
+    elif [ "$picked" = "$FILENAME_ITEM" ]; then
+        printAcc | cb
+        echo "filename is copied to clipboard"
+    elif [ "$picked" = "$PASS_ITEM" ]; then
+        pass show --clip "$account"
+    elif [ "$picked" = "otpauth" ]; then
+        pass otp "$account" | cb
+        echo "OTP is copied to clipboard"
+    else
+        grep "$picked" <<< "$meta" | head -1 | cut -d ':' -f 2 | pbcopy
+        echo "$picked is copied to clipboard"
+    fi
+done

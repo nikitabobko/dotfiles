@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+if isMacOs; then
+    /Applications/Alacritty.app/Contents/MacOS/alacritty -t "mylauncher" \
+        -o window.position.x="100" \
+        -o window.position.y="200" \
+        -o window.dimensions.lines=35 \
+        -o window.dimensions.columns=80 \
+        -o window.decorations=none \
+        -e "spotlight-cli"
+        # --working-directory "$(pwd)" \
+else
+    xkb-switch -s us
+    detach rofi -modi combi -combi-modi drun,run -show combi -dpi 1
+fi

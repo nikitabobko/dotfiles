@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+if [ $# -ne 1 ]; then
+    echo "Usage: timer <NUMBER>[SUFFIX}"
+    echo "SUFFIX may be 's' for seconds (the default), 'm' for minutes, 'h' for hours or 'd' for days. NUMBER need not be an integer."
+    exit 1
+fi
+
+echo "The timer started at:"
+date
+sleep $1 || true
+
+(ffplay -f lavfi -i "sine=frequency=1000" -nodisp &) || true
+
+while true; do
+    notify-send "TIMER: $1 is/are expired"
+    echo "Expired at:"
+    date
+    sleep 10
+done

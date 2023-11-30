@@ -1,0 +1,53 @@
+source ~/.vimrc
+set ideajoin
+set argtextobj| " Add argument text objects. Same what 'set argtextobj' does for me in real vim
+set quickscope
+
+" TODO hotkey to open current file in a real vim
+
+" map <Space>fb :Buffers<CR> " TODO
+nmap <C-n> :action SelectNextOccurrence<CR>| " vim-visual-multi
+map <Space>f :action GotoFile<CR>
+" map <Space>gr :action FindInPath<CR>
+map <Space>h :action RecentFiles<CR>| " Like ":History" in vim
+map ]d :action GotoNextError<CR>
+map [d :action GotoPreviousError<CR>
+map ]q :action NextOccurence<CR>
+map [q :action PreviousOccurence<CR>
+" map <Space>gr :Rg<CR>
+" map <Space>gs :action GotoSymbol<CR>
+map <Space>p :action ParameterInfo<CR>
+" nmap <A-S-j> :action EditorCloneCaretBelow<CR>| " vim-visual-multi TODO drop?
+" nmap <A-S-k> :action EditorCloneCaretAbove<CR>| " vim-visual-multi
+nmap <Space>Q <Action>(Exit)
+map <Space>u :action FindUsages<CR>
+" map <Space>r :action SearchEverywhere<CR>| " Mnemonics gRep
+map <Space>e :action ShowNavBar<CR>| " I have the same mapping vim
+map <Space>r :action RenameElement<CR>
+map <Space>b :action Annotate<CR>
+map <Space>l :action Vcs.ShowTabbedFileHistory<CR>| " Git log for current file
+map <Space>d :action ShowErrorDescription<CR>
+map <Space>a :action ShowIntentionActions<CR>
+map <Space>s :action FileStructurePopup<CR>
+
+" CopyReferencePopupGroup
+" map <Space>c :action CopyPathFromRepositoryRootProvider<CR>
+
+" map <Space>gy :action GotoTypeDeclaration<CR>
+map gy :action GotoTypeDeclaration<CR>
+
+" Because it's like suspend in terminal. Defined in IdeaVIM (not in bobko-keymap) because I want to preserve ctr+z original
+" behaviour in other toolwindows just in case
+map <C-z> <Action>(Terminal.OpenInTerminal)
+
+" Tip: use :actionlist
+
+" Fix behaviour of IdeaVIM
+" imap <A-p> <ESC>p
+" map cc "_O<ESC>jddka| " Fix ideavim bug that it doesn't support 'cc' as "insert with correct indent"
+nmap <C-i> <Action>(Forward)| " https://youtrack.jetbrains.com/issue/VIM-44
+nmap <C-o> <Action>(Back)| " https://youtrack.jetbrains.com/issue/VIM-44 `nmap <C-o> :action Back<CR>|` doesn't work for some reason
+nnoremap g; :action JumpToLastChange<Enter>| " https://youtrack.jetbrains.com/issue/VIM-519
+nnoremap g, :action JumpToNextChange<Enter>| " https://youtrack.jetbrains.com/issue/VIM-519
+
+"command ol :action RecentFiles

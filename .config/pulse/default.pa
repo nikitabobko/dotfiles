@@ -1,0 +1,8 @@
+.include /etc/pulse/default.pa
+
+# Should be commented in /etc/pulse/default.pa
+# load-module module-switch-on-port-available
+
+.ifexists module-switch-on-connect.so
+load-module module-switch-on-connect
+.endif

@@ -1,0 +1,17 @@
+{
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.fontFamily": "JetBrains Mono",
+    "workbench.activityBar.visible": false,
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [
+        120
+    ],
+    "workbench.startupEditor": "none",
+    "cSpell.userWords": [
+        "commited"
+    ],
+    "workbench.colorTheme": "Visual Studio Light",
+    "security.workspace.trust.untrustedFiles": "open",
+    "security.workspace.trust.enabled": false
+}

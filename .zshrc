@@ -1,0 +1,1 @@
+source ~/.shell.sh zsh

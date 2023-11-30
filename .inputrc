@@ -1,0 +1,2 @@
+# Ignore pasted enter at the end in bash
+set enable-bracketed-paste on

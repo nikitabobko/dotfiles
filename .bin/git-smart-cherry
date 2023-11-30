@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+if [ $# -ne 2 ] && [ $# -ne 3 ]; then
+    echo "Usage: git-smart-cherry <upstream> <head> [<limit>]"
+    echo "see 'git-cherry' command. 'git-smart-cherry' command have same semantic"
+    exit 1
+fi
+
+upstream=$1
+head=$2
+limit=""
+if [ $# -eq 3 ]; then
+    limit=$3
+fi
+
+git cherry $upstream $head $limit | while read it; do
+    if [[ $it == "+"* ]]; then
+        candidate=$(echo $it | awk '{print $2}')
+        title=$(git log -1 --pretty="%B" $candidate | head -1)
+        date=$(git log -1 --pretty="%at" $candidate)
+        author="$(git log -1 --pretty="%an" $candidate) <$(git log -1 --pretty="%ae" $candidate)>"
+        # What a shame, git doesn't allow to find by author date :facepalm: https://stackoverflow.com/questions/37311494/how-to-get-git-to-show-commits-in-a-specified-date-range-for-author-date
+        cherry_pick_duplicate=$(git log --pretty="%at" --author="$author" -F --grep="$title" $upstream | grep "$date" | head -1)
+
+        if [ -z $cherry_pick_duplicate ]; then
+            echo "+ $candidate"
+        else
+            echo "- $candidate"
+        fi
+    else
+        echo $it
+    fi
+done

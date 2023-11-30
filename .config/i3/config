@@ -1,0 +1,296 @@
+#################
+### Variables ###
+#################
+set $win Mod4
+set $alt Mod1
+set $middle_mouse_button button2
+set $left_mouse_button button1
+set $right_mouse_button button3
+set $scroll_up    button4
+set $scroll_down  button5
+set $scroll_right button6
+set $scroll_left  button7
+# Use xev to check keys names
+set $backtick grave
+# set $refresh_i3status killall -SIGUSR1 i3status
+
+#####################
+### Configuration ###
+#####################
+font pango:Roboto Regular 8
+floating_modifier $win
+focus_follows_mouse no
+
+# Get rid of title bars
+# default_border pixel 2 # TODO remove because it's redundant?
+# default_floating_border normal 2 # TODO remove because it's redundant?
+for_window [all] border pixel 2
+
+hide_edge_borders smart
+for_window [all] title_window_icon on
+# https://github.com/i3/i3/issues/5389
+# workspace_layout tabbed
+focus_wrapping workspace
+
+####################
+### Exec Hotkeys ###
+####################
+bindsym XF86AudioRaiseVolume  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%     && $refresh_i3status
+bindsym XF86AudioLowerVolume  exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%     && $refresh_i3status
+bindsym XF86AudioMute         exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle     && $refresh_i3status
+bindsym XF86AudioMicMute      exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+
+# bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%-
+# bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle
+
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 15
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 15
+
+bindsym $alt+space            exec spotlight
+bindsym $alt+Shift+space      exec "rofi -modi window -show window -dpi 1"
+bindsym $alt+Shift+Tab        move workspace to output right; move workspace to output up; focus output right; focus output up
+# bindsym $win+Tab              focus output right; focus output up
+bindsym $win+Print            exec "flameshot screen -c"
+
+# macOS like screenshot hotkeys
+bindsym $alt+Shift+2 exec "gnome-screenshot --window --interactive"
+bindsym $alt+Shift+3 exec "gnome-screenshot --interactive"
+bindsym $alt+Shift+4 exec "gnome-screenshot --area --interactive"
+
+###########################
+### i3 specific hotkeys ###
+###########################
+# it's not possible to use win because win+space (keybr layout toggle) shadows win+shfit+space
+# mode_toggle is floating vs tailing toggle
+# bindsym $win+Shift+slash focus mode_toggle
+bindsym $win+Shift+apostrophe focus child
+bindsym $win+apostrophe focus parent
+bindsym Control+$alt+q exec bobko-screenlocker
+bindsym Control+$win+f bar mode toggle
+
+# Avoid memozing latest split layout with explicit "toggle splith splitv" instead of "toggle split". 
+# I prefer predictability to memoization
+bindsym $win+slash layout toggle splith splitv
+
+# bindsym $win+q kill
+# bindsym $win+period kill
+# Like in macOS
+bindsym $alt+q kill
+bindsym $alt+w kill
+# Create new container (do I use it?)
+# bindsym $win+Shift+slash split toggle
+bindsym $win+comma layout toggle tabbed stacking
+
+bindsym --whole-window $win+Shift+$left_mouse_button floating toggle; sticky disable
+bindsym --whole-window $win+Shift+$right_mouse_button floating enable; sticky toggle
+# bindsym --whole-window $win+$scroll_up resize grow height 5 px or 5 ppt
+# bindsym --whole-window $win+$scroll_down resize shrink height 5 px or 5 ppt
+# bindsym --whole-window $win+Shift+$scroll_up resize grow width 5 px or 5 ppt
+# bindsym --whole-window $win+Shift+$scroll_down resize shrink width 5 px or 5 ppt
+
+# Focus window
+bindsym $win+k focus tiling; focus up
+bindsym $win+h focus tiling; focus left
+bindsym $win+j focus tiling; focus down
+bindsym $win+l focus tiling; focus right
+
+bindsym $win+Left  focus tiling; focus left
+bindsym $win+Down  focus tiling; focus down
+bindsym $win+Up    focus tiling; focus up
+bindsym $win+Right focus tiling; focus right
+
+# Move window
+bindsym $win+Shift+k     focus tiling; move up
+bindsym $win+Shift+h     focus tiling; move left
+bindsym $win+Shift+j     focus tiling; move down
+bindsym $win+Shift+l     focus tiling; move right
+
+bindsym $win+Shift+Left  focus tiling; move left
+bindsym $win+Shift+Down  focus tiling; move down
+bindsym $win+Shift+Up    focus tiling; move up
+bindsym $win+Shift+Right focus tiling; move right
+
+# "Move in" window
+bindsym $win+Control+Shift+k focus tiling; focus up;    split toggle; focus down;  move up
+bindsym $win+Control+Shift+h focus tiling; focus left;  split toggle; focus right; move left
+bindsym $win+Control+Shift+j focus tiling; focus down;  split toggle; focus up;    move down
+bindsym $win+Control+Shift+l focus tiling; focus right; split toggle; focus left;  move right
+
+# "Move in" mode
+set $move_in_mode "'Move in' window"
+bindsym $win+Shift+slash mode $move_in_mode
+mode $move_in_mode {
+    bindsym $win+Shift+k focus tiling; focus up;    split toggle; focus down;  move up;    mode "default"
+    bindsym $win+Shift+h focus tiling; focus left;  split toggle; focus right; move left;  mode "default"
+    bindsym $win+Shift+j focus tiling; focus down;  split toggle; focus up;    move down;  mode "default"
+    bindsym $win+Shift+l focus tiling; focus right; split toggle; focus left;  move right; mode "default"
+
+    bindsym Escape mode "default"
+}
+
+# Swap windows
+bindsym $win+Control+k focus tiling; focus up;    mark --add swapee; focus down;  swap container with mark swapee; unmark swapee
+bindsym $win+Control+h focus tiling; focus left;  mark --add swapee; focus right; swap container with mark swapee; unmark swapee
+bindsym $win+Control+j focus tiling; focus down;  mark --add swapee; focus up;    swap container with mark swapee; unmark swapee
+bindsym $win+Control+l focus tiling; focus right; mark --add swapee; focus left;  swap container with mark swapee; unmark swapee
+
+# Resize window
+bindsym $win+Shift+minus resize shrink height 2 px or 2 ppt
+bindsym $win+Shift+equal resize grow height 2 px or 2 ppt
+bindsym $win+Shift+comma resize shrink width 2 px or 2 ppt
+bindsym $win+Shift+period resize grow width 2 px or 2 ppt
+
+set $0 "000"
+set $1 "111"
+set $2 "222"
+set $3 "333"
+set $4 "444"
+set $5 "555"
+set $6 "666"
+set $7 "777"
+set $8 "888"
+set $9 "999"
+set $a "AAA"
+set $b "BBB"
+set $c "CCC"
+set $d "DDD"
+set $e "EEE"
+set $f "FFF"
+set $g "GGG"
+set $i "III"
+set $m "MMM"
+set $n "NNN"
+set $o "OOO"
+set $p "PPP"
+set $q "QQQ"
+set $r "RRR"
+set $s "SSS"
+set $t "TTT"
+set $u "UUU"
+set $v "VVV"
+set $w "WWW"
+set $x "XXX"
+set $y "YYY"
+set $z "ZZZ"
+
+bindsym $alt+Tab workspace back_and_forth
+bindsym $win+Tab workspace back_and_forth
+bindsym $win+0 workspace $0
+bindsym $win+1 workspace $1
+bindsym $win+2 workspace $2
+bindsym $win+3 workspace $3
+bindsym $win+4 workspace $4
+bindsym $win+5 workspace $5
+bindsym $win+6 workspace $6
+bindsym $win+7 workspace $7
+bindsym $win+8 workspace $8
+bindsym $win+9 workspace $9
+bindsym $win+a workspace $a
+bindsym $win+b workspace $b
+bindsym $win+c workspace $c
+bindsym $win+d workspace $d
+bindsym $win+e workspace $e
+bindsym $win+f workspace $f
+bindsym $win+g workspace $g
+bindsym $win+i workspace $i
+bindsym $win+m workspace $m
+bindsym $win+n workspace $n
+bindsym $win+o workspace $o
+bindsym $win+p workspace $p
+bindsym $win+q workspace $q
+bindsym $win+r workspace $r
+bindsym $win+s workspace $s
+bindsym $win+t workspace $t
+bindsym $win+u workspace $u
+bindsym $win+v workspace $v
+bindsym $win+w workspace $w
+bindsym $win+x workspace $x
+bindsym $win+y workspace $y
+bindsym $win+z workspace $z
+
+bindsym $win+Shift+0 move container to workspace $0
+bindsym $win+Shift+1 move container to workspace $1
+bindsym $win+Shift+2 move container to workspace $2
+bindsym $win+Shift+3 move container to workspace $3
+bindsym $win+Shift+4 move container to workspace $4
+bindsym $win+Shift+5 move container to workspace $5
+bindsym $win+Shift+6 move container to workspace $6
+bindsym $win+Shift+7 move container to workspace $7
+bindsym $win+Shift+8 move container to workspace $8
+bindsym $win+Shift+9 move container to workspace $9
+bindsym $win+Shift+a move container to workspace $a
+bindsym $win+Shift+b move container to workspace $b
+bindsym $win+Shift+c move container to workspace $c
+bindsym $win+Shift+d move container to workspace $d
+bindsym $win+Shift+e move container to workspace $e
+bindsym $win+Shift+f move container to workspace $f
+bindsym $win+Shift+g move container to workspace $g
+bindsym $win+Shift+i move container to workspace $i
+bindsym $win+Shift+m move container to workspace $m
+bindsym $win+Shift+n move container to workspace $n
+bindsym $win+Shift+o move container to workspace $o
+bindsym $win+Shift+p move container to workspace $p
+bindsym $win+Shift+q move container to workspace $q
+bindsym $win+Shift+r move container to workspace $r
+bindsym $win+Shift+s move container to workspace $s
+bindsym $win+Shift+t move container to workspace $t
+bindsym $win+Shift+u move container to workspace $u
+bindsym $win+Shift+v move container to workspace $v
+bindsym $win+Shift+w move container to workspace $w
+bindsym $win+Shift+x move container to workspace $x
+bindsym $win+Shift+y move container to workspace $y
+bindsym $win+Shift+z move container to workspace $z
+
+# TODO Replace with command mode like vim/tmux with fzf and scripting help
+set $wm_mode "WINDOW MANAGER MODE rel[O]ad, [E]xit, [P]oweroff, re[B]oot, [F]loating, [S]ticky, [R]eset"
+bindsym $win+Shift+semicolon mode $wm_mode
+mode $wm_mode {
+    bindsym o reload
+    bindsym e exit
+    bindsym p exec poweroff
+    bindsym b exec reboot
+    bindsym s floating enable; sticky toggle; mode "default"
+    bindsym f sticky disable; floating toggle; mode "default"
+    # https://www.reddit.com/r/i3wm/comments/8c6yfy/how_to_reset_a_workspace_move_all_nodes_to_root/
+    bindsym r [tiling workspace="__focused__"] move workspace "_reorder_"; [workspace="_reorder_"] move workspace current; mode "default"
+    bindsym --release x exec xkill; mode "default"
+
+    bindsym Escape mode "default"
+}
+
+bindsym $win+Return exec alacritty
+
+# set $run_mode "RUN MODE"
+# bindsym $win+semicolon mode "RUN MODE"
+# mode "RUN MODE" {
+#     bindsym $win+semicolon exec alacritty; mode "default"
+#     bindsym      semicolon exec alacritty; mode "default"
+#     bindsym c exec google-chrome-stable; mode "default"
+#     bindsym --release x exec xkill; mode "default"
+#     # TODO drop because now I use `p` in CLI?
+#     # bindsym p exec rofi-pass; mode "default"
+#     bindsym Escape mode "default"
+# }
+
+# # Jump into VNC session back and worth with one hotkey. Make sure to disable "Pass system keys directly to server" in VNC
+# bindsym $win+Shift+Return move container to workspace "REMOTE"
+# bindsym $win+Return mode "REMOTE"; workspace "REMOTE"
+# mode "REMOTE" {
+#     bindsym $win+Return mode "default"; workspace back_and_forth
+# }
+
+# class                 border  backgr. text    indicator child_border
+client.focused          #4c7899 #285577 #ffffff #2e9ef4   #32CD32
+
+bar {
+    status_command i3blocks
+    position top
+    tray_output primary
+    modifier none
+
+    # Disable switching workspaces with scrolling
+    bindsym $scroll_up nop
+    bindsym $scroll_down nop
+    bindsym $scroll_left nop
+    bindsym $scroll_right nop
+}

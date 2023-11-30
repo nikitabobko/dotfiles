@@ -1,0 +1,8 @@
+# For date format documentation refer to:
+# https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/text/SimpleDateFormat.html
+dateFormat: dd MMM yyyy
+maxNumberOfEventsToShowInPopupMenu: 20
+# For time format documentation refer to:
+# https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/text/SimpleDateFormat.html
+timeFormat: HH:mm
+refreshFrequencyInMinutes: 5

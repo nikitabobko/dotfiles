@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+# Email myself. "t" stands for "todo"
+
+~/.script/todo-base my-email@gmail.com "pass show google.com/my-email@gmail.com-app-password" my-email+todo@gmail.com

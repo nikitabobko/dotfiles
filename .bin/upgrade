@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e # Exit if one of commands exit with non-zero exit code
+set -u # Treat unset variables and parameters other than the special parameters ‘@’ or ‘*’ as an error
+
+sudo pacman -S archlinux-keyring # update gpg keys
+gpg --refresh-keys
+sudo pacman -Syu
+trizen -Su --noconfirm --aur
